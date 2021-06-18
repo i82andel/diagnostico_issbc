@@ -6,15 +6,7 @@ Created on Fri Jun 18 17:29:11 2021
 """
 
 #!/usr/bin/env python
-# -*- coding: iso-8859-1 -*-
-"""
-Created on Sun Jan 19 12:19:10 2014
-
-@author: acalvo
-"""
-import bcEnfermedades
-
-
+import bcEnfermedadesPulmonares as bcEnfermedades
 
 class MetodoCoberturaCausal():
     '''Método de cobertura causal para la tarea de diagnostico'''
