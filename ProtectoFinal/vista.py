@@ -30,13 +30,18 @@ class MainWindow(QWidget):
         self.sintomasWindget = QtWidgets.QTableWidget(self.centralwidget)
         self.sintomasWindget.setGeometry(QtCore.QRect(60, 30, 391, 261))
         self.sintomasWindget.setObjectName("sintomasWindget")
-        self.sintomasWindget.setColumnCount(2)
-        self.sintomasWindget.setColumnWidth(0, 240)
+        self.sintomasWindget.setColumnCount(3)
+        self.sintomasWindget.setColumnWidth(0, 20)
+        self.sintomasWindget.setColumnWidth(1, 230)
         self.sintomasWindget.setRowCount(len(observables_list))
+        
+        self.checkBox = QtWidgets.QCheckBox()
+        self.checkBox.setObjectName("checkBox")
         
         for i in range(len(observables)):
             item1 = QtWidgets.QTableWidgetItem(observables[i].nombre)
-            #item1 = setChecked()
+            checkbox = QtWidgets.QCheckBox()
+            #item1 = setChecked(True)
             #item1 = setFlags(QtCore.Qt.ItemIsUserCheckable|QtCore.Qt.ItemIsEnabled)
             
             if observables[i].tipo == 'multiple':
@@ -44,14 +49,15 @@ class MainWindow(QWidget):
                 for j in observables[i].valoresPermitidos:
                     combobox.addItem(j)
                 
-                self.sintomasWindget.setCellWidget(i,1,combobox)
+                self.sintomasWindget.setCellWidget(i,2,combobox)
             elif observables[i].tipo=='boleano':
                 combobox = QComboBox()
                 combobox.addItem('True')
                 combobox.addItem('False')
-                self.sintomasWindget.setCellWidget(i, 1, combobox)
+                self.sintomasWindget.setCellWidget(i, 2, combobox)
             
-            self.sintomasWindget.setItem(i,0,item1)
+            self.sintomasWindget.setItem(i,1,item1)
+            self.sintomasWindget.setCellWidget(i,0,checkbox)
 
         
         item = QtWidgets.QTableWidgetItem()
@@ -105,7 +111,7 @@ class MainWindow(QWidget):
         self.cobertura = QtWidgets.QPushButton(self.centralwidget)
         self.cobertura.setGeometry(QtCore.QRect(550, 540, 75, 23))
         self.cobertura.setObjectName("cobertura")
-        self.pushButton.clicked.connect(self.coberturaCausal)
+        self.cobertura.clicked.connect(self.coberturaCausal)
         
 #*************************************************************************#
 
@@ -115,15 +121,7 @@ class MainWindow(QWidget):
        
         
 #*************************************************************************#
-        #self.setCentralWidget(self.centralwidget)
-        '''self.menubar = QtWidgets.QMenuBar(self)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 839, 21))
-        self.menubar.setObjectName("menubar")
-        self.setMenuBar(self.menubar)
-        self.statusbar = QtWidgets.QStatusBar(self)
-        self.statusbar.setObjectName("statusbar")
-        self.setStatusBar(self.statusbar)
-'''
+
         self.retranslateUi()
         QtCore.QMetaObject.connectSlotsByName(self)
         self.show()
@@ -132,18 +130,19 @@ class MainWindow(QWidget):
         _translate = QtCore.QCoreApplication.translate
         self.setWindowTitle(_translate("MainWindow", "MainWindow"))
         item = self.sintomasWindget.verticalHeaderItem(0)
-        #item.setText(_translate("MainWindow", "1"))
-        item = self.sintomasWindget.horizontalHeaderItem(0)
-        item.setText(_translate("MainWindow", "Observable"))
+        item.setText(_translate("MainWindow", "1"))
         item = self.sintomasWindget.horizontalHeaderItem(1)
-        item.setText(_translate("MainWindow", "Dolor"))
+        #item.setText(_translate("MainWindow", "Observable"))
+        item = self.sintomasWindget.horizontalHeaderItem(2)
+        #item.setText(_translate("MainWindow", "Dolor"))
         self.label.setText(_translate("MainWindow", "Selecciona los Síntomas"))
         self.label_2.setText(_translate("MainWindow", " Hipotesis"))
         self.label_3.setText(_translate("MainWindow", "Diagnostico"))
         self.pushButton.setText(_translate("MainWindow", "Diagnosticar"))
         self.cobertura.setText(_translate("MainWindow", "Cobertura Causal"))
         self.label_4.setText(_translate("MainWindow", "Explicación"))
-   
+        self.checkBox.setText(_translate("MainWindow", "CheckBox"))
+        
     def diagnostica(self):
         controlador.eventDiagnostica(self)
         
@@ -156,7 +155,7 @@ if __name__ == '__main__':
     
     app = QApplication(sys.argv[1:])
 
-    window = MainWindow()
-    window.show()
+    window = MainWindow("Fallos", observables)
+    #window.show()
 
     sys.exit(app.exec_())

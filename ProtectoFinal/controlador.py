@@ -5,11 +5,10 @@ Created on Fri Jun 18 19:51:10 2021
 @author: LuisAneri
 """
 
-# -*- coding: utf-8 -*-
-
-
-from PyQt5 import QtGui
-from PyQt5 import QtCore
+import sys
+from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.QtCore import *
+from PyQt5.QtWidgets import QApplication,QMainWindow,QComboBox,QWidget, QCheckBox
 import modelo as md
 
 def getNameBC():
@@ -19,25 +18,14 @@ def eventCoberturaCausal(cdDiagnostico,tr=False):
     '''
     Inferencia de cobertura causal.
     '''
-    fallos=[]#Vamos a captar los fallos del cuadro de di�logo
-    if tr:
-        print ('entra')
-    for i in range(cdDiagnostico.sintomasWindget.rowCount()):
-        item1=cdDiagnostico.sintomasWindget.item(i,0)
-        if item1.checkState()==QtCore.Qt.CheckState.Checked:
-            #print item1.checkState()
-            item2=cdDiagnostico.sintomasWindget.cellWidget(i, 1)
-            #print item2, item2.currentText()
-            fallos.append( (item1.text(),item2.currentText()) )
-    if tr:
-        print (fallos)
+    fallos=getObservables(cdDiagnostico)
     cc=md.CoberturaCausal(fallos)#Invocamos a la inferencia de cobertura causal del diagn�stico
     cc.execute()
     lHipotesis=[]
     for h in cc.listaHipotesis:
         lHipotesis.append(h.nombre)#Obtenemos la lista de hip�tesis
     cdDiagnostico.HipotesisList.clear()#Borramos la informaci�n del listWidget
-    cdDiagnostico.HipotesisList.addItems(lHipotesis)#a�adimos la nueva informaci�n al listWidgwet
+    #cdDiagnostico.HipotesisList.addItems(lHipotesis)#a�adimos la nueva informaci�n al listWidgwet
     
             
 def eventDiagnostica(cdDiagnostico,tr=False):
@@ -47,28 +35,14 @@ def eventDiagnostica(cdDiagnostico,tr=False):
     cdDiagnostico.plainTextEdit.clear()
     pass
     eventCoberturaCausal(cdDiagnostico,tr=False)
-    fallos=[]
-        #print cdDiagnostico.listWidgetFallos.count()
-    if tr:
-        print ('entra')
-    for i in range(cdDiagnostico.sintomasWindget.rowCount()):
-        item1=cdDiagnostico.sintomasWindget.item(i,0)
-        if item1.checkState()==QtCore.Qt.CheckState.Checked:
-            #print item1.checkState()
-            item2=cdDiagnostico.sintomasWindget.cellWidget(i, 1)
-            #print item2, item2.currentText()
-            fallos.append( (item1.text(),item2.currentText()) )#Creamos una tupla del fallo y sus posibles
-                                                               #valores
-    if tr:        
-        print ('Presentando los fallos',fallos)
-        print ('======================')
-    
+    fallos=getObservables(cdDiagnostico)   
     #Comprueba que los fallos captados son compatibles con la base de conocimiento
     observables=md.identificaSignosSintomas(fallos)
     if tr:
         print ('Obteniendo Observables:', observables)
     if not observables==None:#Continuo porque todo es correcto
         pass
+        #Se llama al metodoCoberturaCasual para obtener las hipotesis y la explicacion
         mcc=md.MetodoCoberturaCausal(observables)#Creamos una instancia del m�todo cc
         mcc.execute()
         if tr:
@@ -77,41 +51,53 @@ def eventDiagnostica(cdDiagnostico,tr=False):
         print ('=============')
         print (mcc.explicacion)
         print ('')
-        print ('Diagnostico: ' )
+        print ('Diagnostico: ') 
         print ('============ ')
         for d in mcc.diagnostico:
-            print( d.nombre)
+            print (d.nombre)
         print ('fin')
         cdDiagnostico.plainTextEdit.clear()
         cdDiagnostico.plainTextEdit.appendPlainText(mcc.explicacion)
         cdDiagnostico.plainTextEdit.moveCursor(QtGui.QTextCursor.Start)
         
-        
-        #tc=cdDiagnostico.plainTextEdit.textCursor()
-        #tc.movePosition(QtGui.QTextCursor.Start)
-        #print tc.position()
+
         cdDiagnostico.listWidgetDiagnosticos.clear()
         lDiag=[]
         for d in mcc.diagnostico:
             lDiag.append(d.nombre)
+        if lDiag:
             cdDiagnostico.listWidgetDiagnosticos.addItems(lDiag)
-    
-    
-        
-        
+        else:
+            cdDiagnostico.listWidgetDiagnosticos.addItems(["No hay diagnostico para estos sintomas"])
     
     return
-    mcc=md.MetodoCoberturaCausal(fallos)
-    mcc.execute()
-    print (mcc.diagnostico)
-    print (mcc.explicacion)
     
-    
+#def eventInforma(cdDiagnostico, value):
+#    fallos = getObservables(cdDiagnostico)
+#    cc=ckModApDiagnostico.CoberturaCausal(fallos)#Invocamos a la inferencia de cobertura causal del diagn�stico
+#    cc.execute()
+#    lHipotesis=[]
+#    for h in cc.listaHipotesis:
+#        lHipotesis.append(h.nombre)
+#
+#    print lHipotesis[value]
+#    print fallos
+#    informacion = ckModApDiagnostico.informacionFallos(lHipotesis[value])            
+#    cdDiagnostico.PlainTextEditInformation.clear()
+#    cdDiagnostico.PlainTextEditInformation.appendPlainText(informacion.explicacion)
+#    cdDiagnostico.PlainTextEditInformation.moveCursor(QtGui.QTextCursor.Start)
  
-def observables():
-    return 
-       
-    
+def getObservables(cdDiagnostico):
+    fallos=[]#Vamos a captar los fallos del cuadro de di�logo
 
-if __name__=='__main__':  
-    pass
+    for i in range(cdDiagnostico.sintomasWindget.rowCount()):
+        item1=cdDiagnostico.sintomasWindget.cellWidget(i,0)
+        text = cdDiagnostico.sintomasWindget.item(i,1)
+        if item1.isChecked():
+            #print (item1.checkState())
+            item2=cdDiagnostico.sintomasWindget.cellWidget(i, 2)
+            #print (item2, item2.currentText())
+            fallos.append( (text.text(),item2.currentText()) )
+    return  fallos
+        
+        

@@ -14,7 +14,7 @@ class MetodoCoberturaCausal():
     '''Método de cobertura causal para la tarea de diagnostico'''
     def __init__(self,fallos):
         self.fallos=fallos
-        self.explicacion=''
+        self.explicacion= ''
         self.diferencial=[]
         self.diagnostico=[]
         pass
@@ -35,12 +35,12 @@ class MetodoCoberturaCausal():
         @rtype:   bolean
         @return:  Devuelve True si se ha realizado con éxito.
         '''
-        self.explicacion+=u'Ejectutando cobertura causal. '.encode(encoding='iso-8859-1') 
+        self.explicacion+=u'Ejectutando cobertura causal. ' 
         #Se obtiene el conjunto diferencial invocando a la inferencia de cobertura causal
         cc=CoberturaCausal(self.fallos)
 
         self.diferencial=cc.execute()
-        self.explicacion+=u'Se obtiene el conjunto diferencial: \n'.encode(encoding='iso-8859-1')
+        self.explicacion+=u'Se obtiene el conjunto diferencial: \n'
 
         for f in self.diferencial: #Va construyendo la explicación
             self.explicacion+=f.nombre+'\n'
@@ -53,7 +53,7 @@ class MetodoCoberturaCausal():
                 print ('hipotesis seleccionada', hipotesis)
                 print ('======================')
             
-            self.explicacion+=u'\nProbamos la  hipotesis de '.encode(encoding='iso-8859-1')
+            self.explicacion+=u'\nProbamos la  hipotesis de '
             self.explicacion+=hipotesis.nombre+'\n'
             if tr:            
                 #print self.explicacion
@@ -139,7 +139,7 @@ class Obtener(Inferencia):
         if len(lHipotesis)>0:
             return lHipotesis[0]    
 
-    
+   
 class Verificar(Inferencia):
     '''
     Verifica si una hipótesis de averia es compatible con un conjunto de fallos.
