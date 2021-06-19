@@ -263,7 +263,7 @@ def hipotesis():
     Posibles enfermedades o averías que pueden darse
     '''
     gri=Gripe()
-    ap=Resfrado()
+    ap=Resfriado()
     tarj=COVID_19()
     
     lHp=[gri, ap, tarj]

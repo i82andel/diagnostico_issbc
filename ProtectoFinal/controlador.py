@@ -15,80 +15,103 @@ import modelo as md
 def getNameBC():
     return md.cd.getNombreBC()
             
-def eventDiagnostica(cdDiagnostico,tr=False):
+def eventCoberturaCausal(cdDiagnostico,tr=False):
     '''
-    Controla el evento de diagnostico.
+    Inferencia de cobertura causal.
     '''
-    
-    cdDiagnostico.listWidgetDiagnosticos.clear() #Borramos la informacion del los diagnosticos    
-    cdDiagnostico.PlainTextEditExplicacion.clear()
-    cdDiagnostico.listWidgetHipotesis.clear()
-    
-    
-    fallos = []
+    fallos=[]#Vamos a captar los fallos del cuadro de di�logo
     if tr:
         print ('entra')
-    for i in range(cdDiagnostico.tableWidgetFallos.rowCount()):
-        item1=cdDiagnostico.tableWidgetFallos.item(i,0)
-        if item1.checkState()==QtCore.Qt.Checked:
-            fallos.append(item1.text())#Creamos una tupla del fallo y sus posibles
+    for i in range(cdDiagnostico.sintomasWindget.rowCount()):
+        item1=cdDiagnostico.sintomasWindget.item(i,0)
+        if item1.checkState()==QtCore.Qt.CheckState.Checked:
+            #print item1.checkState()
+            item2=cdDiagnostico.sintomasWindget.cellWidget(i, 1)
+            #print item2, item2.currentText()
+            fallos.append( (item1.text(),item2.currentText()) )
+    if tr:
+        print (fallos)
+    cc=md.CoberturaCausal(fallos)#Invocamos a la inferencia de cobertura causal del diagn�stico
+    cc.execute()
+    lHipotesis=[]
+    for h in cc.listaHipotesis:
+        lHipotesis.append(h.nombre)#Obtenemos la lista de hip�tesis
+    cdDiagnostico.HipotesisList.clear()#Borramos la informaci�n del listWidget
+    cdDiagnostico.HipotesisList.addItems(lHipotesis)#a�adimos la nueva informaci�n al listWidgwet
+    
+            
+def eventDiagnostica(cdDiagnostico,tr=False):
+    '''
+    Controla el evendo de diagn�stico
+    '''
+    cdDiagnostico.plainTextEdit.clear()
+    pass
+    eventCoberturaCausal(cdDiagnostico,tr=False)
+    fallos=[]
+        #print cdDiagnostico.listWidgetFallos.count()
+    if tr:
+        print ('entra')
+    for i in range(cdDiagnostico.sintomasWindget.rowCount()):
+        item1=cdDiagnostico.sintomasWindget.item(i,0)
+        if item1.checkState()==QtCore.Qt.CheckState.Checked:
+            #print item1.checkState()
+            item2=cdDiagnostico.sintomasWindget.cellWidget(i, 1)
+            #print item2, item2.currentText()
+            fallos.append( (item1.text(),item2.currentText()) )#Creamos una tupla del fallo y sus posibles
                                                                #valores
     if tr:        
         print ('Presentando los fallos',fallos)
         print ('======================')
-        
     
-    if not fallos==None:
-        
-        lObservables = []
-        for i in range(cdDiagnostico.tableWidgetObservables.rowCount()):
-            item1=cdDiagnostico.tableWidgetObservables.item(i,0)
-            item2=cdDiagnostico.tableWidgetObservables.cellWidget(i, 1)
-            lObservables.append((item1.text(),item2.currentText()))        
-        
-        
-        
-        mcc=md.MetodoCoberturaCausal(fallos)
-        mcc.setObservables(lObservables)
-        mcc.execute(True)
-        
-
-        lHipotesis = []        
-        for h in mcc.getDiferencial():
-            lHipotesis.append(h.nombre)#Obtenemos la lista de hipótesis
-            cdDiagnostico.listWidgetHipotesis.clear()#Borramos la información del listWidget
-            cdDiagnostico.listWidgetHipotesis.addItems(lHipotesis)#añadimos la nueva información al listWidgwet
-
+    #Comprueba que los fallos captados son compatibles con la base de conocimiento
+    observables=md.identificaSignosSintomas(fallos)
+    if tr:
+        print ('Obteniendo Observables:', observables)
+    if not observables==None:#Continuo porque todo es correcto
+        pass
+        mcc=md.MetodoCoberturaCausal(observables)#Creamos una instancia del m�todo cc
+        mcc.execute()
+        if tr:
+            pass
         print ('Justificacion')
         print ('=============')
-        print (mcc.getExplicacion())
-        print ()
+        print (mcc.explicacion)
+        print ('')
         print ('Diagnostico: ' )
-        print ( '============ ')
-        for d in mcc.getDiagnostico():
-            print (d.nombre)
+        print ('============ ')
+        for d in mcc.diagnostico:
+            print( d.nombre)
         print ('fin')
-        cdDiagnostico.PlainTextEditExplicacion.clear()
-        cdDiagnostico.PlainTextEditExplicacion.appendPlainText(mcc.explicacion)
-        cdDiagnostico.PlainTextEditExplicacion.moveCursor(QtGui.QTextCursor.Start)
+        cdDiagnostico.plainTextEdit.clear()
+        cdDiagnostico.plainTextEdit.appendPlainText(mcc.explicacion)
+        cdDiagnostico.plainTextEdit.moveCursor(QtGui.QTextCursor.Start)
+        
+        
+        #tc=cdDiagnostico.plainTextEdit.textCursor()
+        #tc.movePosition(QtGui.QTextCursor.Start)
+        #print tc.position()
         cdDiagnostico.listWidgetDiagnosticos.clear()
         lDiag=[]
-        if len(mcc.getDiagnostico()) <= 0:
-            lDiag.append("No hay diagnostico")
+        for d in mcc.diagnostico:
+            lDiag.append(d.nombre)
             cdDiagnostico.listWidgetDiagnosticos.addItems(lDiag)
-        else:
-            for d in mcc.getDiagnostico():
-                if d.nombre not in lDiag:
-                    lDiag.append(d.nombre)
-            cdDiagnostico.listWidgetDiagnosticos.addItems(lDiag)
-        
-    else:
-        cdDiagnostico.listWidgetDiagnosticos.addItems(["No hay diagnosticos."])        
-        cdDiagnostico.PlainTextEditExplicacion.appendPlainText("No hay diagnostico valido. Ninguna de las hipotesis planteadas es posible.")
     
-    return    
+    
+        
+        
+    
+    return
+    mcc=md.MetodoCoberturaCausal(fallos)
+    mcc.execute()
+    print (mcc.diagnostico)
+    print (mcc.explicacion)
+    
     
  
 def observables():
-    return   
+    return 
+       
+    
 
+if __name__=='__main__':  
+    pass

@@ -25,11 +25,11 @@ class DiagnosticDlg(QMainWindow):
 
         self.name = name #Coloca el nombre al cuadro de dialogo
         #Label
-        labelListA=QtGui.QLabel("Selecione los Fallos Presentados",self)
-        labelListB=QtGui.QLabel("",self)
+        labelListA=QLabel("Selecione los Fallos Presentados",self)
+        labelListB=QLabel("",self)
         
-        labelFallosA = QtGui.QLabel("Seleccione los valores para observables", self)
-        labelFallosB = QtGui.QLabel("", self)
+        labelFallosA = QLabel("Seleccione los valores para observables", self)
+        labelFallosB = QLabel("", self)
     
         headerObservables = ['Nombre del observable', 'Valor observado']
         headerFallos = ['Nombre del fallo']
@@ -40,11 +40,7 @@ class DiagnosticDlg(QMainWindow):
         self.tableWidgetObservables.setColumnWidth(1, 400) #Asignan ancho a las columnas
         self.tableWidgetObservables.setHorizontalHeaderLabels(headerObservables) #Asigna etiquetas a las columnas
         
-        #Creamos el tableWidget para los fallos
-        self.tableWidgetFallos = QtGui.QTableWidget(len(fallos), 1)
-        self.tableWidgetFallos.setColumnWidth(0, 300)
-        self.tableWidgetFallos.setHorizontalHeaderLabels(headerFallos)
-        
+
         #Rellenamos la tabla de observables
         for i in range(len(observables)): 
             #print i, observables[i].nombre,observables[i].tipo,observables[i].valoresPermitidos
@@ -63,28 +59,20 @@ class DiagnosticDlg(QMainWindow):
 
             self.tableWidgetObservables.setItem(i, 0, item1)#Establecemos el item en la columna 0
             
-        #Rellenamos la tabla de fallos
-        for i in range(len(fallos)):
-            item1 = QtGui.QTableWidgetItem(fallos[i].nombre)
-            item1.setCheckState(QtCore.Qt.Checked)
-            item1.setFlags(QtCore.Qt.ItemIsUserCheckable|QtCore.Qt.ItemIsEnabled)
-            
-            self.tableWidgetFallos.setItem(i, 0, item1)
-        
      
         #ListWidget para las hipotesis  
-        labelHipotesisL=QtGui.QLabel("Posibles Hipotesis",self)#Creamos un listwidget para las posibles hipotesis
-        labelHipotesisR=QtGui.QLabel("",self)
+        labelHipotesisL=QLabel("Posibles Hipotesis",self)#Creamos un listwidget para las posibles hipotesis
+        labelHipotesisR=QLabel("",self)
         self.listWidgetHipotesis = QtGui.QListWidget()#Lista de hipotesis
         
         #ListWidget para el diagnostico
-        labelDiagnosticoL=QtGui.QLabel("Diagnostico",self)
-        labelDiagnosticoR=QtGui.QLabel("",self)
+        labelDiagnosticoL=QLabel("Diagnostico",self)
+        labelDiagnosticoR=QLabel("",self)
         self.listWidgetDiagnosticos = QtGui.QListWidget()#Lista de diagnosticos
         
         #Texto para la explicacion
-        labelExplicacionL=QtGui.QLabel("Explicacion",self)
-        labelExplicacionR=QtGui.QLabel("     ",self)
+        labelExplicacionL=QLabel("Explicacion",self)
+        labelExplicacionR=QLabel("     ",self)
         self.PlainTextEditExplicacion = QtGui.QPlainTextEdit("Todavía no se ha realizado al diagnostico")#Cuadro de texto de la explicacion 
           
         #Botones

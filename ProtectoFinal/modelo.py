@@ -8,6 +8,8 @@ Created on Fri Jun 18 17:29:11 2021
 #!/usr/bin/env python
 import bcEnfermedadesPulmonares as bcEnfermedades
 
+conocimiento = bcEnfermedades
+
 class MetodoCoberturaCausal():
     '''Método de cobertura causal para la tarea de diagnostico'''
     def __init__(self,fallos):
@@ -48,16 +50,16 @@ class MetodoCoberturaCausal():
             seleccionar=Seleccionar(self.diferencial)#Invoca a la inferencia de seleccionar
             hipotesis=seleccionar.execute()#Selecciona una hipótesis a ecaluar
             if tr:
-                print 'hipotesis seleccionada', hipotesis
-                print '======================'
+                print ('hipotesis seleccionada', hipotesis)
+                print ('======================')
             
             self.explicacion+=u'\nProbamos la  hipotesis de '.encode(encoding='iso-8859-1')
             self.explicacion+=hipotesis.nombre+'\n'
             if tr:            
                 #print self.explicacion
-                print
-                print 'antes de verificar', self.fallos,hipotesis
-                print 'hipotesis->',hipotesis.debePresentar
+                print()
+                print ('antes de verificar', self.fallos,hipotesis)
+                print ('hipotesis->',hipotesis.debePresentar)
 
             verifica=Verificar(self.fallos,hipotesis)#Con los fallos observados invoca la inferencia verificar
             verifica.execute(tr=tr)
@@ -73,7 +75,7 @@ class MetodoCoberturaCausal():
             self.explicacion+=verifica.justificacion  #Añade a la justificación la justificación de la verificación
         pass
         if tr:
-            print 'EL DIAGNOSTICO ES :',self.diagnostico
+            print ('EL DIAGNOSTICO ES :',self.diagnostico)
         
         
      
@@ -118,8 +120,8 @@ class Seleccionar(Inferencia):
             return None
             
 
-class Especificar(Inferencia):
-    '''Por desarrollar'''
+'''class Especificar(Inferencia):
+    Por desarrollar
     def __init__(self,lHipotesis):
         Inferencia.__init__(self)
         self.lHipotesis=lHipotesis
@@ -129,14 +131,14 @@ class Especificar(Inferencia):
 
 
 class Obtener(Inferencia):
-    '''Por desarrollar'''
+    Por desarrollar
     def __init__(self,lHipotesis):
         Inferencia.__init__(self)
         self.lHipotesis=lHipotesis
     def execute(self):
         if len(lHipotesis)>0:
             return lHipotesis[0]    
-
+'''
     
 class Verificar(Inferencia):
     '''
@@ -152,12 +154,12 @@ class Verificar(Inferencia):
         #Eliminar aquellas hipotesis que no tengan todos los sintomas en debe de estar
         resultado=True
         if tr:
-            print 'verificando la hipotesis:',self.hipotesis.nombre, self.hipotesis
+            print ('verificando la hipotesis:',self.hipotesis.nombre, self.hipotesis)
         for fh in self.hipotesis.debePresentar:#Cada fallo de la hipotesis debePresentar debe de estar en fallos
                                               # con sus valores aprepiados
              if tr:
-                 print 'debe presentar:', fh,fh.nombre, fh.valor,'->',self.fallos
-                 print 'debe presentar:', (fh.nombre, fh.valor) ,'->',[(f.nombre,f.valor) for f in self.fallos]
+                 print ('debe presentar:', fh,fh.nombre, fh.valor,'->',self.fallos)
+                 print ('debe presentar:', (fh.nombre, fh.valor) ,'->',[(f.nombre,f.valor) for f in self.fallos])
               
              if not (fh.nombre in [f.nombre for f in self.fallos]):#Si el nombre del fallo de la hipótesis no está
                                                                    #en la lista de nombres de los fallos presentados
@@ -240,9 +242,9 @@ def identificaSignosSintomas(ltFallos):
     obs=[]
     for tf in ltFallos:#Comprobar que cada fallo está en la base de conocimiento
         
-        print tf
+        print (tf)
         ob=bcEnfermedades.creaObservable(tf)
-        print ob
+        print (ob)
         if not ob==None:
             obs.append(ob)
         else:
@@ -259,7 +261,7 @@ if __name__ == '__main__':
         cc=CoberturaCausal([dolorLumbar])
         cc.execute()
         for n in cc.listaHipotesis:
-            print n.nombre,n,n.debePresentar[0].nombre,n.debePresentar[0].valor
+            print (n.nombre,n,n.debePresentar[0].nombre,n.debePresentar[0].valor)
         pass
     if False:
         dolorPerineal=bcEnfermedades.DolorPerineal(True)
@@ -268,45 +270,45 @@ if __name__ == '__main__':
         #diferencial=mcc.obtenerConjuntDiferencial()
         #print 'diferencial', diferencial
         mcc.execute()
-        print 'Justificacion'
-        print '============='
-        print mcc.explicacion
-        print 'Diagnostico: ',mcc.diagnostico
-        print 'fin'
+        print ('Justificacion')
+        print ('=============')
+        print (mcc.explicacion)
+        print ('Diagnostico: ',mcc.diagnostico)
+        print ('fin')
     if False:
         fiebre=bcEnfermedades.Fiebre('alta')
         disuria=bcEnfermedades.Disuria(True)
         mcc=MetodoCoberturaCausal([fiebre, disuria])
         mcc.execute()
-        print 'Justificacion'
-        print '============='
-        print mcc.explicacion
-        print 
-        print 'Diagnostico: ' 
+        print ('Justificacion')
+        print ('=============')
+        print (mcc.explicacion)
+        print ()
+        print ('Diagnostico: ' )
         for d in mcc.diagnostico:
-            print d.nombre
-        print 'fin'
+            print (d.nombre)
+        print ('fin')
     if True:
         #dolorLumbar=bcEnfermedades.creaObservable(('dolor lumbar','agudo'))
         #dolorLumbar=bcEnfermedades.DolorLumbar('agudo')
         #print 'el dolor lumbar es',dolorLumbar.valor
         #disuria=bcEnfermedades.Disuria(True)
-        print
+        print()
         fiebre=bcEnfermedades.Fiebre('alta')
         disuria=bcEnfermedades.Disuria(True)
         mcc=MetodoCoberturaCausal([fiebre,disuria])
         mcc.execute(tr=False)
-        print 'Justificacion'
-        print '============='
-        print mcc.explicacion
-        print 
-        print 'Diagnostico: ' 
+        print ('Justificacion')
+        print ('=============')
+        print (mcc.explicacion)
+        print ()
+        print ('Diagnostico: ' )
         for d in mcc.diagnostico:
-            print d.nombre
-        print 'fin'
+            print ()
+        print ('fin')
     if False:
         ls=identificaSignosSintomas([(u'fiebre','alta'),(u'dolor lumbar','alto')])
-        print 'imprimiendo resultados',ls
+        print ('imprimiendo resultados',ls)
         
         
         
