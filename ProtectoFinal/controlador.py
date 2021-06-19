@@ -25,7 +25,7 @@ def eventCoberturaCausal(cdDiagnostico,tr=False):
     for h in cc.listaHipotesis:
         lHipotesis.append(h.nombre)#Obtenemos la lista de hip�tesis
     cdDiagnostico.HipotesisList.clear()#Borramos la informaci�n del listWidget
-    #cdDiagnostico.HipotesisList.addItems(lHipotesis)#a�adimos la nueva informaci�n al listWidgwet
+    cdDiagnostico.HipotesisList.addItems(lHipotesis)#a�adimos la nueva informaci�n al listWidgwet
     
             
 def eventDiagnostica(cdDiagnostico,tr=False):
@@ -61,14 +61,14 @@ def eventDiagnostica(cdDiagnostico,tr=False):
         cdDiagnostico.plainTextEdit.moveCursor(QtGui.QTextCursor.Start)
         
 
-        cdDiagnostico.listWidgetDiagnosticos.clear()
+        cdDiagnostico.DiagnosticoList.clear()
         lDiag=[]
         for d in mcc.diagnostico:
             lDiag.append(d.nombre)
         if lDiag:
-            cdDiagnostico.listWidgetDiagnosticos.addItems(lDiag)
+            cdDiagnostico.DiagnosticoList.addItems(lDiag)
         else:
-            cdDiagnostico.listWidgetDiagnosticos.addItems(["No hay diagnostico para estos sintomas"])
+            cdDiagnostico.DiagnosticoList.addItems(["No hay diagnostico para estos sintomas"])
     
     return
     

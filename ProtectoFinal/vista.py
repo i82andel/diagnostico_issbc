@@ -108,10 +108,6 @@ class MainWindow(QWidget):
         self.pushButton.setObjectName("pushButton")
         self.pushButton.clicked.connect(self.diagnostica)
         
-        self.cobertura = QtWidgets.QPushButton(self.centralwidget)
-        self.cobertura.setGeometry(QtCore.QRect(550, 540, 75, 23))
-        self.cobertura.setObjectName("cobertura")
-        self.cobertura.clicked.connect(self.coberturaCausal)
         
 #*************************************************************************#
 
@@ -139,17 +135,11 @@ class MainWindow(QWidget):
         self.label_2.setText(_translate("MainWindow", " Hipotesis"))
         self.label_3.setText(_translate("MainWindow", "Diagnostico"))
         self.pushButton.setText(_translate("MainWindow", "Diagnosticar"))
-        self.cobertura.setText(_translate("MainWindow", "Cobertura Causal"))
         self.label_4.setText(_translate("MainWindow", "Explicación"))
         self.checkBox.setText(_translate("MainWindow", "CheckBox"))
         
     def diagnostica(self):
         controlador.eventDiagnostica(self)
-        
-    def coberturaCausal(self):
-        #Recolecta datos de las vistas y se lo pasamos al controlador
-        # Al pasar self pasamos toda la informaci�n de la ventana
-        controlador.eventCoberturaCausal(self)    
 
 if __name__ == '__main__':
     

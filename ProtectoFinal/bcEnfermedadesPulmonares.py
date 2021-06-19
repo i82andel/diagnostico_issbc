@@ -190,7 +190,7 @@ class Enfermedad():
 
 class Gripe(Enfermedad):
     def __init__(self):
-        Enfermedad.__init__(self,nombre=u'Gripe'.encode(encoding='iso-8859-1'))
+        Enfermedad.__init__(self,nombre=u'Gripe')
         #Creamos instancias de observables
         tosSeca=TosSeca([u'leve',u'intenso'])
         tosFlema=TosFlema(True)
@@ -205,15 +205,14 @@ class Gripe(Enfermedad):
         
         
         
-        self.ayuda=u'Ayuda sobre Gripe'.encode(encoding='iso-8859-1')
+        self.ayuda=u'Ayuda sobre Gripe'
         self.debePresentar =[tosSeca,fiebre,dolorCabeza]
         self.puedePresentar = [moqueoNasal,dolorGaragnta,diarrea]
         self.noPuedePresentar = [tosFlema,perdidaOlfato,estornudos,dificultadRespirar]
-        self.ayuda=u'Ayuda sobre Gripe'.encode(encoding='iso-8859-1')
-
+        self.ayuda=u'Ayuda sobre Gripe'
 class Resfriado(Enfermedad):
     def __init__(self):
-        Enfermedad.__init__(self,nombre=u'Resfriado'.encode(encoding='iso-8859-1'))
+        Enfermedad.__init__(self,nombre=u'Resfriado')
         #Creamos instancias de observables
         tosSeca=TosSeca([u'leve',u'intenso'])
         tosFlema=TosFlema(True)
@@ -228,15 +227,15 @@ class Resfriado(Enfermedad):
         
         
         
-        self.ayuda=u'Ayuda sobre Resfriado'.encode(encoding='iso-8859-1')
+        self.ayuda=u'Ayuda sobre Resfriado'
         self.debePresentar =[tosFlema,moqueoNasal,estornudos,dolorGaragnta]
         self.puedePresentar = [tosSeca]
         self.noPuedePresentar = [fiebre,perdidaOlfato,dificultadRespirar,dolorCabeza,diarrea]
-        self.ayuda=u'Ayuda sobre Resfriado'.encode(encoding='iso-8859-1')
+        self.ayuda=u'Ayuda sobre Resfriado'
 
 class COVID_19(Enfermedad):
     def __init__(self):
-        Enfermedad.__init__(self,nombre=u'COVID_19'.encode(encoding='iso-8859-1'))
+        Enfermedad.__init__(self,nombre=u'COVID_19')
         #Creamos instancias de observables
         tosSeca=TosSeca([u'leve',u'intenso'])
         tosFlema=TosFlema(True)
@@ -251,11 +250,11 @@ class COVID_19(Enfermedad):
         
         
         
-        self.ayuda=u'Ayuda sobre COVID_19'.encode(encoding='iso-8859-1')
+        self.ayuda=u'Ayuda sobre COVID_19'
         self.debePresentar =[tosSeca,fiebre,perdidaOlfato]
         self.puedePresentar = [moqueoNasal,dolorGaragnta,dificultadRespirar,dolorCabeza]
         self.noPuedePresentar = [tosFlema,estornudos,diarrea]
-        self.ayuda=u'Ayuda sobre COVID_19'.encode(encoding='iso-8859-1')
+        self.ayuda=u'Ayuda sobre COVID_19'
 
 # Hay que añadir las enfermedades a lHp
 def hipotesis():

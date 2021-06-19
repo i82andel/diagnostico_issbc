@@ -165,9 +165,9 @@ class Verificar(Inferencia):
                                                                    #en la lista de nombres de los fallos presentados
                                                                    #Construye la explicación
                  self.resultado=False
-                 self.justificacion+=u'    No puede ser  '.encode(encoding='iso-8859-1')
+                 self.justificacion+=u'    No puede ser  '
                  self.justificacion+=self.hipotesis.nombre
-                 self.justificacion+=u' porque deberia presentar el fallo '.encode(encoding='iso-8859-1')
+                 self.justificacion+=u' porque deberia presentar el fallo '
                  self.justificacion+=fh.nombre+' \n'
                  #print type(f.valor)
                  if isinstance(fh.valor,bool):
@@ -189,9 +189,9 @@ class Verificar(Inferencia):
                                  break
                         
                  if falla:#Si se ha fallado se añade a la justificación--->Mejorar
-                     self.justificacion+=u'    No puede ser  '.encode(encoding='iso-8859-1')
+                     self.justificacion+=u'    No puede ser  '
                      self.justificacion+=self.hipotesis.nombre
-                     self.justificacion+=u' porque deberia presentar el fallo '.encode(encoding='iso-8859-1')
+                     self.justificacion+=u' porque deberia presentar el fallo '
                      self.justificacion+=fh.nombre+' \n con con valor apropiado.'
                      resultado=False
                      
@@ -199,17 +199,17 @@ class Verificar(Inferencia):
                  self.resultado=False
                  return (False,self.justificacion)
              else:
-                 self.justificacion+=u' Puede ser  '.encode(encoding='iso-8859-1')+self.hipotesis.nombre+'.\n'
+                 self.justificacion+=u' Puede ser  '+self.hipotesis.nombre+'.\n'
                  
                  
         #Eliminar aquellas hipotesis que tenga algun fallo en no debe tener
         for f in self.hipotesis.noPuedePresentar:
              if (f.nombre, f.valor) in [(e.nombre,e.valor) for e in self.fallos]:
                  self.resultado=False
-                 self.justificacion+=u'    No puede ser  '.encode(encoding='iso-8859-1')
+                 self.justificacion+=u'    No puede ser  '
                  self.justificacion+=self.hipotesis.nombre
                  #self.justificacion+=f.nombre+' '
-                 self.justificacion+=u' porque esta enfermedad no puede presentar el fallo '.encode(encoding='iso-8859-1')
+                 self.justificacion+=u' porque esta enfermedad no puede presentar el fallo '
                  self.justificacion+=f.nombre+' con valor '
                  if isinstance(f.valor,bool):
                      self.justificacion+=str(f.valor)+'\n'
@@ -230,7 +230,7 @@ def diagnostico(hipotesis,fallos):
     
     if hipotesis=='PROSTATITIS':
         diagnostico='PROSTATITIS'
-        justificacion = u'es una justificación'.encode(encoding='iso-8859-1')
+        justificacion = u'es una justificación'
         return (diagnostico,justificacion)
     else:
         return (None,None)
