@@ -8,7 +8,7 @@
 import sys
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtCore import *
-from PyQt5.QtWidgets import QApplication,QMainWindow,QComboBox,QWidget
+from PyQt5.QtWidgets import QApplication,QMainWindow,QComboBox,QWidget, QCheckBox
 import controlador
 
 class MainWindow(QWidget):
@@ -31,11 +31,12 @@ class MainWindow(QWidget):
         self.sintomasWindget.setGeometry(QtCore.QRect(60, 30, 391, 261))
         self.sintomasWindget.setObjectName("sintomasWindget")
         self.sintomasWindget.setColumnCount(2)
+        self.sintomasWindget.setColumnWidth(0, 240)
         self.sintomasWindget.setRowCount(len(observables_list))
         
         for i in range(len(observables)):
             item1 = QtWidgets.QTableWidgetItem(observables[i].nombre)
-            #item1 = setCheckState(QtCore.Qt.Unchecked)
+            #item1 = setChecked()
             #item1 = setFlags(QtCore.Qt.ItemIsUserCheckable|QtCore.Qt.ItemIsEnabled)
             
             if observables[i].tipo == 'multiple':

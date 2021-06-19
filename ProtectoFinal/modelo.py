@@ -120,8 +120,8 @@ class Seleccionar(Inferencia):
             return None
             
 
-'''class Especificar(Inferencia):
-    Por desarrollar
+class Especificar(Inferencia):
+   # Por desarrollar
     def __init__(self,lHipotesis):
         Inferencia.__init__(self)
         self.lHipotesis=lHipotesis
@@ -131,14 +131,14 @@ class Seleccionar(Inferencia):
 
 
 class Obtener(Inferencia):
-    Por desarrollar
+    #Por desarrollar
     def __init__(self,lHipotesis):
         Inferencia.__init__(self)
         self.lHipotesis=lHipotesis
     def execute(self):
         if len(lHipotesis)>0:
             return lHipotesis[0]    
-'''
+
     
 class Verificar(Inferencia):
     '''
